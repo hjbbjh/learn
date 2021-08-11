@@ -63,6 +63,49 @@ public class Sum3 {
         return result;
     }
 
+    public static List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        // 排序
+        Arrays.sort(nums);
+        // 左指针遍历
+        for (int left = 0; left < nums.length; left++) {
+            // 如果左指针数值大于0，则左、中、右指针和必定大于0，结束
+            if (nums[left] > 0) {
+                break;
+            }
+            // 左指针需要跳过重复出现的数值
+            if (left > 0 && nums[left] == nums[left - 1]) {
+                continue;
+            }
+            // 右指针，跟随左指针的变动，每次初始化为数组右边界
+            int right = nums.length - 1;
+            // 在左指针右侧遍历中指针
+            for (int middle = left + 1; middle < nums.length; middle++) {
+                // 中指针需要跳过重复出现的数值
+                if (middle > left + 1 && nums[middle] == nums[middle - 1]) {
+                    continue;
+                }
+                // 左中右加和如果大于0，在左、中不变的基础上，右指针左移
+                while (middle < right && nums[left] + nums[middle] + nums[right] > 0) {
+                    right--;
+                }
+                // 如果中右双指针相遇直接结束中右双指针
+                if (middle == right) {
+                    break;
+                }
+                // 如果左中右加和为0，则为要找的值
+                if (nums[left] + nums[middle] + nums[right] == 0) {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(nums[left]);
+                    list.add(nums[middle]);
+                    list.add(nums[right]);
+                    result.add(list);
+                }
+            }
+        }
+        return result;
+    }
+
     /**
      * 官方解法
      * create by: haojingbin
