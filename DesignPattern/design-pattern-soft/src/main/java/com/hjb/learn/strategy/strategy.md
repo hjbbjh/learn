@@ -192,3 +192,5 @@ public class CashMain {
 但对于策略模式来说，仅仅增加一个具体策略类，作为参数传递给环境类而已，但缺点是，客户端必须清楚了解每个具体策略类，而不像工厂模式一样，只需要知道不同场景下的参数type即可。  
 3. 简单工厂+策略模式，具备更好的解耦性，客户端只需要知道CashFactoryContext一个类即可，具体的行为算法对象的创建逻辑也隐藏了，但同时策略增加时也不可避免的需要修改CashFactoryContext。
 4. 综上所述，各有利弊，择优选择。
+
+[github](https://github.com/hjbbjh/learn/tree/main/DesignPattern/design-pattern-soft/src/main/java/com/hjb/learn/strategy)
