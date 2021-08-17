@@ -1,5 +1,8 @@
 package com.hjb.learn.string.longest_substring_without_repeating_characters.soft;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * ClassName: LongestSubstringWithoutRepeatingCharacters
  * Description: 给定一个字符串 s ，请你找出其中不含有重复字符的 最长子串 的长度。
@@ -35,4 +38,32 @@ package com.hjb.learn.string.longest_substring_without_repeating_characters.soft
  * @author haojingbin
  */
 public class LongestSubstringWithoutRepeatingCharacters {
+
+    private static int lengthOfLongestSubstring(String s) {
+        int n = s.length();
+        Set<Character> diffrent = new HashSet<>();
+        // 右指针
+        int right = -1;
+        int max = 0;
+        // 左指针
+        for (int left = 0; left < n; left++) {
+            // 不重复的右指针不断右移，同时加到set中
+            while (right + 1 < n && !diffrent.contains(s.charAt(right + 1))) {
+                diffrent.add(s.charAt(right + 1));
+                right++;
+            }
+            // 出现重复字符，此时可求得一个不重复字符的子串，和之前最大长度比较，求最大，注意此时重复的字符还没有加到set中
+            max = Math.max(max, diffrent.size());
+            // 左指针右移一位，因为此时left位置到right位置不重复，那么left+1位置到right位置肯定也不会重复
+            // 如果left位置是重复字符，那么移除后新一轮就变成了不重复字符加到了set中，如果left位置不重复，那新一轮还是重复字符，left继续右移一位
+            diffrent.remove(s.charAt(left));
+        }
+        return max;
+    }
+
+
+    public static void main(String[] args) {
+        String test = "abcabcbb";
+        System.out.println("the longest substring without repeating characters of \"" + test + "\" is " + lengthOfLongestSubstring(test));
+    }
 }
