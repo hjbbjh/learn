@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="maven-antrun-" default="main">
+  <target name="main">
+    <mkdir dir="${session.executionRootDirectory}/target" />
+    <copy todir="${session.executionRootDirectory}/target">
+      <fileset dir="D:\private\all\learn\Project\project-learn\target/">
+        <include name="*.jar" />
+        <include name="*.war" />
+      </fileset>
+    </copy>
+    <scp trust="true" file="D:\private\all\learn\Project\project-learn\target/*.jar" todir="username:password@ip:/home/deployer/hjb" />
+    <sshexec trust="true" password="7ui8&amp;UI*" host="10.139.18.11" command="ls" username="deployer" />
+  </target>
+</project>

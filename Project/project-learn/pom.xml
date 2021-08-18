@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.hjb.learn</groupId>
+    <artifactId>project-learn</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+
+    <modules>
+        <module>project-web</module>
+        <module>project-management</module>
+    </modules>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- 创建目录， 在clean 的时候会清除target， 如果没有目录会报错 -->
+                                <mkdir dir="${session.executionRootDirectory}/target"/>
+                                <!-- todir 文件的目的地文件夹  -->
+                                <copy todir="${session.executionRootDirectory}/target">
+                                    <!-- dir 表示项目（子模块）编译的目录， 一般是target文件夹  -->
+                                    <fileset dir="${project.build.directory}/">
+                                        <include name="*.jar"/>
+                                        <include name="*.war"/>
+                                    </fileset>
+                                </copy>
+                                <scp file="${project.build.directory}/*.jar"
+                                     todir="username:password@ip:/home/deployer/hjb" trust="true"/>
+                                <sshexec host="10.139.18.11" username="deployer" password="7ui8&amp;UI*" command="ls"
+                                         trust="true"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
