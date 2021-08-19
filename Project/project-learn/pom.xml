@@ -15,42 +15,45 @@
         <module>project-management</module>
     </modules>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-antrun-plugin -->
+        <maven.antrun.plugin.version>3.0.0</maven.antrun.plugin.version>
+        <!-- https://mvnrepository.com/artifact/com.jcraft/jsch -->
+        <jsch.version>0.1.55</jsch.version>
+    </properties>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <!-- 创建目录， 在clean 的时候会清除target， 如果没有目录会报错 -->
-                                <mkdir dir="${session.executionRootDirectory}/target"/>
-                                <!-- todir 文件的目的地文件夹  -->
-                                <copy todir="${session.executionRootDirectory}/target">
-                                    <!-- dir 表示项目（子模块）编译的目录， 一般是target文件夹  -->
-                                    <fileset dir="${project.build.directory}/">
-                                        <include name="*.jar"/>
-                                        <include name="*.war"/>
-                                    </fileset>
-                                </copy>
-                                <scp file="${project.build.directory}/*.jar"
-                                     todir="username:password@ip:/home/deployer/hjb" trust="true"/>
-                                <sshexec host="10.139.18.11" username="deployer" password="7ui8&amp;UI*" command="ls"
-                                         trust="true"/>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven.antrun.plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.jcraft</groupId>
+                            <artifactId>jsch</artifactId>
+                            <version>${jsch.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <id>scp</id>
+                            <phase>install</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 </project>

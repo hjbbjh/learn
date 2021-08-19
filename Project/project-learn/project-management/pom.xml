@@ -11,5 +11,37 @@
 
     <artifactId>project-management</artifactId>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>scp</id>
+                        <configuration>
+                            <target>
+                                <path id="jsch.path">
+                                    <fileset dir="${env.ANT_HOME}\lib">
+                                        <include name="**/*.jar"/>
+                                    </fileset>
+                                </path>
+                                <taskdef name="scp" classname="org.apache.tools.ant.taskdefs.optional.ssh.Scp"
+                                         classpathref="jsch.path"/>
+                                <taskdef name="sshexec" classname="org.apache.tools.ant.taskdefs.optional.ssh.SSHExec"
+                                         classpathref="jsch.path"/>
+                                <scp file="${project.build.directory}\project-management-1.0-SNAPSHOT.jar"
+                                     todir="deployer:7ui8&amp;UI*@10.139.18.11:/home/deployer/hjb" trust="true"/>
+<!--                                <sshexec host="10.139.18.11" username="deployer" password="7ui8&amp;UI*" command="ls"
+                                         trust="true"/>-->
+                            </target>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 
 </project>
